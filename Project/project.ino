@@ -1311,6 +1311,8 @@ void webSocketEvent(uint8_t numCliente, WStype_t type, uint8_t * payload, size_t
               
               send_confirmacionClave(numCliente, false);
            }
+
+           enviarActualizacionEstados(); 
            
            return;
       }
