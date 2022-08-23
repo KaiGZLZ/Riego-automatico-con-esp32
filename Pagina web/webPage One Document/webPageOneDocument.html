@@ -7,7 +7,6 @@
     <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;/>
 
-    <link rel="stylesheet" href="PaginaWebSinComentar.css">
 </head>
 
 <script>
@@ -87,9 +86,9 @@
 
 
         
-        document.getElementById("encendido1_Texto").innerHTML = "Hora de Encendido<br><br>" + horaEncendido1+ ":" + minutoEncendido1 + "  " + momentoEncendido1 + "<br><br>";    
+        document.getElementById("encendido1_Texto").innerHTML = horaEncendido1+ ":" + minutoEncendido1 + "  " + momentoEncendido1;    
         
-        document.getElementById("apagado1_Texto").innerHTML = "Hora de Apagado<br><br>" + horaApagado1+ ":" + minutoApagado1 + "  " + momentoApagado1 + "<br><br>";    
+        document.getElementById("apagado1_Texto").innerHTML = horaApagado1+ ":" + minutoApagado1 + "  " + momentoApagado1;    
         
         document.getElementById("botonHorario1").checked = estadoAlarma1;
 
@@ -149,9 +148,9 @@
 
 
         
-        document.getElementById("encendido2_Texto").innerHTML = "Hora de Encendido<br><br>" + horaEncendido2+ ":" + minutoEncendido2 + "  " + momentoEncendido2 + "<br><br>";    
+        document.getElementById("encendido2_Texto").innerHTML = horaEncendido2+ ":" + minutoEncendido2 + "  " + momentoEncendido2;    
         
-        document.getElementById("apagado2_Texto").innerHTML = "Hora de Apagado<br><br>" + horaApagado2+ ":" + minutoApagado2 + "  " + momentoApagado2 + "<br><br>";    
+        document.getElementById("apagado2_Texto").innerHTML = horaApagado2+ ":" + minutoApagado2 + "  " + momentoApagado2;    
         
         document.getElementById("botonHorario2").checked = estadoAlarma2;
 
@@ -198,7 +197,7 @@
 
         var full_data = '{"MENSAJE":"ENCENDIDO"';
 
-        if(encendido_Hora.id == "encendido1_Hora"){
+        if(encendido_Hora.id == "entradaHoraEncendido1"){
 
                 full_data = full_data + ',"ENCENDIDO":'+1;
         }
@@ -244,7 +243,7 @@
         var full_data = '{"MENSAJE":"APAGADO"';
 
 
-        if(apagado_Hora.id == "apagado1_Hora"){
+        if(apagado_Hora.id == "entradaHoraApagado1"){
 
             full_data = full_data + ',"APAGADO":'+1;
         }
@@ -411,6 +410,333 @@
 
 </script>
 
+<style>
+
+  html {
+      font-size: 10px;
+  }
+  
+  body {
+      background: Black;
+      color: lime;
+      font-family: 'Orbitron', sans-serif;
+      animation: all .7s; 
+  }
+  
+  /*  SECCION DEL RELOJ   */
+  
+  .contenedor-reloj {
+      z-index: 1; /* Sit on top */
+  
+      max-width: 40rem;
+      padding-top: 1rem;
+      margin-top: 3rem;
+      margin-bottom: 2rem;
+      background-color: rgb(49, 49, 49);
+      position: -webkit-sticky;
+      position: sticky;
+      top: 0px;
+      left: 0px;
+      right: 0px;
+      border-radius: 20px;
+  }
+  
+  .dia-semana-de-reloj {
+      font-size: 3rem;
+  }
+  
+  .hora-de-reloj {
+      width: 100%;
+      padding: 10px;
+      font-size: 4rem;
+  }
+  
+  
+  /*  SECCION DE LA PAGINA    */
+  
+  .contenedor-principal {
+      border: 2px solid rgb(116, 116, 116);
+      border-radius: 1rem;
+      width: 65%;
+  }
+  
+  .nombre-horario {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+      width: 50%;
+      font-size: 3rem;
+  }
+  
+  .boton-valvula {
+      margin-top: 1rem;
+      margin-bottom: 3rem;
+      position: relative;
+      width: 60%;
+      top: 10px;
+      font-size: 2em;
+  }
+  
+  .boton-dias{
+      margin-bottom: 4rem;
+      cursor: pointer;
+      border-radius: 1rem;
+      padding: 0.5rem 1rem;
+  }
+  .boton-dias:hover {
+      opacity: 0.8;
+      color: white;
+      transition: 0.4s;
+  }
+  
+  .dias-de-activacion {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      padding-top: 10rem; /* Location of the box */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgb(0,0,0); /* Fallback color */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  .contenido-dias-de-activacion {
+      font-size: 2.4rem;
+      background-color: black;
+      margin: auto;
+      padding: 2rem;
+      border: 0.2rem solid #888;
+      width: 80%;
+  }
+  
+  .tablaDias {
+      margin-left: 5rem;
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 50%;
+      height: 10%;
+      border-color: aliceblue;
+  }
+  
+  .cajasDias {
+  
+      width: 30px;  /*  Ancho de la caja*/
+      height: 30px; /*  Alto de la caja*/
+  }
+  
+  .close {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+      color: white;
+      text-decoration: none;
+      cursor: pointer;
+  }
+  
+  /*  COMIENZO DE LA ENTRADA DE DATOS */
+  
+  .texto-horas-minutos{
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+  }
+  
+  .entrada-horas-minutos {
+      width : 10rem;
+      padding: 0.5rem 2rem;
+      border-radius: 1.5rem;
+      font-size: 1em;
+      font-weight: bold;
+      text-align: center;
+  }
+  
+  .radio-momento{
+      display: inline-block;
+      margin: 0px 10px;
+      font-size: large;
+      cursor: pointer;
+  }
+  
+  .boton-ok{
+      margin: 10px;
+      padding: 5px;
+      background: grey;
+      border: solid 1px grey;
+      font-weight: bold;
+      font-size: 20px;
+      border-radius: 50%;
+      cursor: pointer;
+  }
+  .boton-ok:hover {
+      opacity: 0.8;
+      color: white;
+      transition: 0.4s;
+  }
+  
+  .contenedor-hora-fijada {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-left: 8rem;
+  }
+  
+  .hora-fijada {
+      font-size: 2.5rem;
+      line-height: 3.5rem;
+      margin-top: 0rem;
+      margin-bottom: 4.5rem;
+  }
+  
+  table {
+      margin-left: 0;
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      /* width: 60%; */
+      border: 10px;
+      border-color: aliceblue;
+      align-content:inherit;
+  }
+  
+  
+  .switch {
+      position: relative;
+      display: inline-block;
+      width: 60px;  /*  Ancho de la caja*/
+      height: 34px; /*  Alto de la caja*/
+  }
+  
+  button{
+      margin: 10px;
+      padding: 5px;
+      background: grey;
+      border: solid 1px grey;
+      font-weight: bold;
+      font-size: 15px;
+  }
+  
+  
+  .switch input {
+      opacity: 0;
+      width: 40px;
+      height: 21px;
+  }
+  
+  .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left:0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(219, 51, 21, 0.822);
+      -webkit-transition: .4s;
+      transition: .4s;
+  }
+  
+  .slider:before {
+      position: absolute;
+      content:"";
+      height: 26px; /*  Alto del slider */
+      width: 30px;  /*  Ancho del slider*/
+      left: 4px;    /*  Cuan corrido estara el slider del BORDE IZQUIERDO la caja HACIA LA DERECHA*/
+      bottom: 4px;  /*  Cuan corrido estara el slider del BORDE DERECHO la caja HACIA LA IZQUIERDA*/
+      background-color: white;
+      -webkit-transition: .4s;
+      transition: .4s;
+  }
+  
+  input:checked + .slider {
+      background-color: rgb(15, 182, 15);
+  }
+  
+  input:focus + .slider {
+      box-shadow: 0 0 1px #2196F3;
+  }
+  
+  input:checked + .slider:before {
+      -webkit-transform: translateX(26px);
+      -ms-transform: translateX(26px);
+      transform: translateX(26px);
+      left: 0px;   /*  Modificacion del movimiento a la izquierda, luego de que se ha movido*/
+  }
+  
+  .slider.round {
+      border-radius: 34px;
+  }
+  
+  .slider.round:before {
+      border-radius: 50%;
+  }
+  
+  
+  
+  /* Changing sizes.... */
+  
+  @media (max-width:500px) {
+  
+      .contenedor-principal {
+          width: 95%;
+      }
+      
+      .contenedor-reloj {
+          margin-top: 0;
+      }
+  
+      .nombre-horario {
+          width: 85%;
+          font-size: 2.5rem;
+      }
+  
+      .boton-valvula {
+          margin-top: 0.5rem;
+          margin-bottom: 2rem;
+          font-size: 1.7em;
+      }
+  
+      .boton-dias{
+          font-size: 1.3rem;
+      }
+  
+      .tablaDias {
+          margin-left: 0;
+      }
+  
+      /*  COMIENZO DE LA ENTRADA DE DATOS */
+  
+      .texto-horas-minutos{
+          font-size: 1.5rem;
+      }
+      
+      .entrada-horas-minutos {
+          width : 3rem;
+          padding: 0.5rem 1.5rem;
+      }
+      
+      .radio-momento{
+          font-size: 1.3rem;
+      }
+      .contenedor-hora-fijada {
+          padding-left: 3rem;
+          width: 12rem;
+      }
+  
+      .hora-fijada {
+          font-size: 2rem;
+          line-height: 2.5rem;
+      }
+  }
+  
+  </style>
+  
 
 <body>
   <center>        <!-- Se declara que lo siguiente a ser escrito sera centrado-->
@@ -420,13 +746,13 @@
 
     <div class="contenedor-reloj">
       <div class="dia-semana-de-reloj" id="dia">Hora:</div>
-      <div class="hora-de-reloj" id="tm"></div>
+      <div class="hora-de-reloj" id="horaReloj"></div>
     </div>
 
   <!--  SECCION DEL HORARIO 1 Y SUS BOTONES -->
     <div class="contenedor-principal">
       <div class="nombre-horario">
-        <p id="nombreFuncionAlarma1" contenteditable="true" oninput="enviarNombre(nombreFuncionAlarma1)">Hora de Apagado</p>
+        <p id="nombreFuncionAlarma1" contenteditable="true" oninput="enviarNombre(nombreFuncionAlarma1)">Horario 1</p>
       </div>
       
       <div>
@@ -448,11 +774,11 @@
 
     <!--  SECCION DEL CONTROL DE LOS DIAS DE LA SEMANA --> 
 
-      <button id="botonDias1" class="boton-dias" onclick="funcionBotonDias(modalDias1, 1)">Dias de la semana</button>
+      <button id="botonDias1" class="boton-dias" onclick="funcionBotonDias(diasDeActivacion1, 1)">Dias de la semana</button>
 
-      <div id="modalDias1" class="modal">
-        <div class="modal-content">
-          <span id="span1" onclick="funcionSpan(modalDias1, 1)" class="close">&times;</span>
+      <div id="diasDeActivacion1" class="dias-de-activacion">
+        <div class="contenido-dias-de-activacion">
+          <span onclick="funcionSpan(diasDeActivacion1, 1)" class="close">&times;</span>
           <p><strong>HORARIO</strong></p><br/>
             <div>
               <table class="tablaDias">
@@ -520,61 +846,61 @@
             <tr>
               <th>
                 <div class="texto-horas-minutos">
-                  <label for="encendido1_Hora"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="encendido1_Hora" class="entrada-horas-minutos">
+                  <label for="entradaHoraEncendido1"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="entradaHoraEncendido1" class="entrada-horas-minutos">
                   </label>
                 </div>
                 <div class="texto-horas-minutos">
-                  <label for="encendido1_Minutos"> Minuto:&nbsp&nbsp <input type="text" id="encendido1_Minutos" class="entrada-horas-minutos">
+                  <label for="entradaMinutoEncendido1"> Minuto:&nbsp&nbsp <input type="text" id="entradaMinutoEncendido1" class="entrada-horas-minutos">
                   </label>
                 </div>
     
                 <div>
                   <div class="radio-momento">
-                    <label for="encendido1_AM" >
-                      <input type="radio" id="encendido1_AM" name="encendido1_Momento" value="AM">AM
+                    <label for="entradaMomentoAmEncendido1" >
+                      <input type="radio" id="entradaMomentoAmEncendido1" name="entradaMomentoEncendido1" value="AM">AM
                     </label>
                   </div>
                   <div class="radio-momento">
-                    <label for="encendido1_PM" >
-                      <input type="radio" id="encendido1_PM" name="encendido1_Momento" value="PM">PM
+                    <label for="entradaMomentoPmEncendido1" >
+                      <input type="radio" id="entradaMomentoPmEncendido1" name="entradaMomentoEncendido1" value="PM">PM
                     </label>
                   </div>
                 </div>
-                <button id="encendido1_Boton" class="boton-ok" onclick="setEncendido(encendido1_Hora, encendido1_Minutos, encendido1_AM, encendido1_PM,encendido1_Texto)">OK!</button><br/><br/><br/>
+                <button class="boton-ok" onclick="setEncendido(entradaHoraEncendido1, entradaMinutoEncendido1, entradaMomentoAmEncendido1, entradaMomentoPmEncendido1,encendido1_Texto)">OK!</button><br/><br/><br/>
     
               </th>
-              <th class="cuadro-respuesta-final">
+              <th class="contenedor-hora-fijada">
                 <p class="hora-fijada">Hora de Encendido </p>
-                <p id="encendido1_Texto" class="hora-fijada">00:00PM</p>
+                <p id="encendido1_Texto" class="hora-fijada"></p>
               </th>
             </tr>
             <tr>
               <th>
                 <div class="texto-horas-minutos">
-                  <label for="apagado1_Hora"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="apagado1_Hora" class="entrada-horas-minutos">
+                  <label for="entradaHoraApagado1"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="entradaHoraApagado1" class="entrada-horas-minutos">
                   </label>
                 </div>
                 <div class="texto-horas-minutos">
-                  <label for="apagado1_Minutos"> Minuto:&nbsp&nbsp <input type="text" id="apagado1_Minutos" class="entrada-horas-minutos">
+                  <label for="entradaMinutoApagado1"> Minuto:&nbsp&nbsp <input type="text" id="entradaMinutoApagado1" class="entrada-horas-minutos">
                   </label>
                 </div>
                 <div>
                   <div class="radio-momento">
-                    <label for="apagado1_AM" >
-                      <input type="radio" id="apagado1_AM" name="apagado1_Momento" value="AM">AM
+                    <label for="entradaMomentoAmApagado1" >
+                      <input type="radio" id="entradaMomentoAmApagado1" name="apagado1_Momento" value="AM">AM
                     </label>
                   </div>
                   <div class="radio-momento">
-                    <label for="apagado1_PM" >
-                      <input type="radio" id="apagado1_PM" name="apagado1_Momento" value="PM">PM
+                    <label for="entradaMomentoPmApagado1" >
+                      <input type="radio" id="entradaMomentoPmApagado1" name="apagado1_Momento" value="PM">PM
                     </label>
                   </div>
                 </div>
-                <button id="apagado1_Boton" class="boton-ok" onclick="setApagado(apagado1_Hora, apagado1_Minutos, apagado1_AM, apagado1_PM,apagado1_Texto)">OK!</button><br/><br/><br/>
+                <button class="boton-ok" onclick="setApagado(entradaHoraApagado1, entradaMinutoApagado1, entradaMomentoAmApagado1, entradaMomentoPmApagado1,apagado1_Texto)">OK!</button><br/><br/><br/>
               </th>
-              <th class="cuadro-respuesta-final">
+              <th class="contenedor-hora-fijada">
                 <p class="hora-fijada">Hora de Apagado </p>
-                <p id="apagado1_Texto" class="hora-fijada">00:00PM</p>
+                <p id="apagado1_Texto" class="hora-fijada"></p>
               </th>
             </tr>
           </table>
@@ -610,11 +936,11 @@
         
   <!--  SECCION DEL CONTROL DE LOS DIAS DE LA SEMANA --> 
 
-        <button id="botonDias2" class="boton-dias" onclick="funcionBotonDias(modalDias2, 2)">Dias de la semana</button>
+        <button id="botonDias2" class="boton-dias" onclick="funcionBotonDias(diasDeActivacion2, 2)">Dias de la semana</button>
 
-        <div id="modalDias2" class="modal">
-            <div class="modal-content">
-                <span id="span2" onclick="funcionSpan(modalDias2, 2)" class="close">&times;</span>
+        <div id="diasDeActivacion2" class="dias-de-activacion">
+            <div class="contenido-dias-de-activacion">
+                <span onclick="funcionSpan(diasDeActivacion2, 2)" class="close">&times;</span>
                 <p><strong>HORARIO</strong></p><br/>
                 <div display="align-right">
                     <table class="tablaDias">
@@ -639,62 +965,62 @@
             <tr>
               <th>
                 <div class="texto-horas-minutos">
-                  <label for="encendido2_Hora"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="encendido2_Hora" class="entrada-horas-minutos">
+                  <label for="entradaHoraEncendido2"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="entradaHoraEncendido2" class="entrada-horas-minutos">
                   </label>
                 </div>
                 <div class="texto-horas-minutos">
-                  <label for="encendido2_Minutos"> Minuto:&nbsp&nbsp <input type="text" id="encendido2_Minutos" class="entrada-horas-minutos">
+                  <label for="entradaMinutoEncendido2"> Minuto:&nbsp&nbsp <input type="text" id="entradaMinutoEncendido2" class="entrada-horas-minutos">
                   </label>
                 </div>
 
                 <div>
                   <div class="radio-momento">
-                    <label for="encendido2_AM" >
-                      <input type="radio" id="encendido2_AM" name="encendido2_Momento" value="AM">AM
+                    <label for="entradaMomentoAmEncendido2" >
+                      <input type="radio" id="entradaMomentoAmEncendido2" name="entradaMomentoEncendido2" value="AM">AM
                     </label>
                   </div>
                   <div class="radio-momento">
-                    <label for="encendido2_PM" >
-                      <input type="radio" id="encendido2_PM" name="encendido2_Momento" value="PM">PM
+                    <label for="entradaMomentoPmEncendido2" >
+                      <input type="radio" id="entradaMomentoPmEncendido2" name="entradaMomentoEncendido2" value="PM">PM
                     </label>
                   </div>
                 </div>
 
-                <button id="encendido2_Boton" class="boton-ok" onclick="setEncendido(encendido2_Hora, encendido2_Minutos, encendido2_AM, encendido2_PM,encendido2_Texto)">OK!</button><br/><br/><br/>
+                <button class="boton-ok" onclick="setEncendido(entradaHoraEncendido2, entradaMinutoEncendido2, entradaMomentoAmEncendido2, entradaMomentoPmEncendido2,encendido2_Texto)">OK!</button><br/><br/><br/>
 
               </th>
-              <th class="cuadro-respuesta-final">
+              <th class="contenedor-hora-fijada">
                 <p class="hora-fijada">Hora de Encendido </p>
-                <p id="encendido2_Texto" class="hora-fijada">00:00PM</p>
+                <p id="encendido2_Texto" class="hora-fijada"></p>
               </th>
             </tr>
             <tr>
               <th>
                 <div class="texto-horas-minutos">
-                  <label for="apagado2_Hora"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="apagado2_Hora" class="entrada-horas-minutos">
+                  <label for="entradaHoraApagado2"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="entradaHoraApagado2" class="entrada-horas-minutos">
                   </label>
                 </div>
                 <div class="texto-horas-minutos">
-                  <label for="apagado2_Minutos"> Minuto:&nbsp&nbsp <input type="text" id="apagado2_Minutos" class="entrada-horas-minutos">
+                  <label for="entradaMinutoApagado2"> Minuto:&nbsp&nbsp <input type="text" id="entradaMinutoApagado2" class="entrada-horas-minutos">
                   </label>
                 </div>
                 <div>
                   <div class="radio-momento">
-                    <label for="apagado2_AM" >
-                      <input type="radio" id="apagado2_AM" name="apagado2_Momento" value="AM">AM
+                    <label for="entradaMomentoAmApagado2" >
+                      <input type="radio" id="entradaMomentoAmApagado2" name="entradaMomentoApagado2" value="AM">AM
                     </label>
                   </div>
                   <div class="radio-momento">
-                    <label for="apagado2_PM" >
-                      <input type="radio" id="apagado2_PM" name="apagado2_Momento" value="PM">PM
+                    <label for="entradaMomentoPmApagado2" >
+                      <input type="radio" id="entradaMomentoPmApagado2" name="entradaMomentoApagado2" value="PM">PM
                     </label>
                   </div>
                 </div>
-                <button id="apagado2_Boton" class="boton-ok" onclick="setApagado(apagado2_Hora, apagado2_Minutos, apagado2_AM, apagado2_PM,apagado2_Texto)">OK!</button><br/><br/><br/>
+                <button class="boton-ok" onclick="setApagado(entradaHoraApagado2, entradaMinutoApagado2, entradaMomentoAmApagado2, entradaMomentoPmApagado2,apagado2_Texto)">OK!</button><br/><br/><br/>
               </th>
-              <th class="cuadro-respuesta-final">
+              <th class="contenedor-hora-fijada">
                 <p class="hora-fijada">Hora de Apagado </p>
-                <p id="apagado2_Texto" class="hora-fijada">00:00PM</p>
+                <p id="apagado2_Texto" class="hora-fijada"></p>
               </th>
             </tr>
           </table>
@@ -728,11 +1054,11 @@
         };
         
 
-        var tm = document.getElementById("tm");
+        var horaReloj = document.getElementById("horaReloj");
 
-        if (estadoHora == 0)    tm.textContent = (hora + ":" + minuto + ":" + segundo + " AM");
+        if (estadoHora == 0)    horaReloj.textContent = (hora + ":" + minuto + ":" + segundo + " AM");
 
-        else                    tm.textContent = (hora + ":" + minuto + ":" + segundo + " PM");
+        else                    horaReloj.textContent = (hora + ":" + minuto + ":" + segundo + " PM");
 
 
         var dias = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
@@ -749,16 +1075,16 @@
 
 
 
-    function funcionBotonDias(modal, numero){
+    function funcionBotonDias(diasDeActivacion, numero){
 
-        modal.style.display = "block";
+        diasDeActivacion.style.display = "block";
         
         enviarDias(numero);
     }
 
-    function funcionSpan(modal, numero){
+    function funcionSpan(diasDeActivacion, numero){
 
-        modal.style.display = "none";
+        diasDeActivacion.style.display = "none";
 
         enviarDias(numero);
     }
@@ -803,19 +1129,19 @@
     }
     
     
-    var modal1 = document.getElementById("modalDias1");
-    var modal2 = document.getElementById("modalDias2");
+    var diasDeActivacion1 = document.getElementById("diasDeActivacion1");
+    var diasDeActivacion2 = document.getElementById("diasDeActivacion2");
 
     window.onclick = function(event) {
 
-        if (event.target == modal1)     {
+        if (event.target == diasDeActivacion1)     {
             
-            modal1.style.display = "none";
+            diasDeActivacion1.style.display = "none";
             enviarDias(1);
         }    
-        if (event.target == modal2)     {
+        if (event.target == diasDeActivacion2)     {
             
-            modal2.style.display = "none";
+            diasDeActivacion2.style.display = "none";
             enviarDias(2);
         }   
     }    

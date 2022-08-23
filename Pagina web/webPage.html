@@ -1,0 +1,825 @@
+
+<!DOCTYPE html>
+<html>
+    
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html"; charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"&amp;gt;/>
+
+    <link rel="stylesheet" href="webPage.css">
+</head>
+
+<script>
+
+    var conexion = new WebSocket('ws://'+location.hostname+':81/');
+
+
+    conexion.onmessage = function(event){
+
+        var full_data = event.data;        
+
+        var data = JSON.parse(full_data);   
+
+        console.log(full_data);
+
+
+        if(data.MENSAJE == "CLAVE"){
+
+            if(data.CONFIRMACION == false){
+
+                alert("La clave ingresada es INCORRECTA");
+
+                return;
+            }
+            else{
+
+                alert("La clave ingresada es CORRECTA");
+                return;
+            }
+        }
+
+        if(data.AUTORIZACION == false){
+
+            send_clave();
+            
+            return;
+        }
+
+
+        var momentoEncendido1, momentoApagado1;
+
+        estadoAlarma1 = data.ALARMA_1;
+
+        horaEncendido1 = parseInt(data.HORA_ENCENDIDO_1);
+        minutoEncendido1 = parseInt(data.MINUTO_ENCENDIDO_1);
+        horaApagado1 = parseInt(data.HORA_APAGADO_1);
+        minutoApagado1 = parseInt(data.MINUTO_APAGADO_1);
+
+
+
+        horaEncendido1 = parseInt(horaEncendido1);
+        minutoEncendido1 = parseInt(minutoEncendido1);
+
+        horaApagado1 = parseInt(horaApagado1);
+        minutoApagado1 = parseInt(minutoApagado1);
+
+
+
+        if (parseInt(data.MOMENTO_ENCENDIDO_1))  momentoEncendido1 = "PM";
+        
+        else   momentoEncendido1 = "AM";   
+        
+
+        if (parseInt(data.MOMENTO_APAGADO_1))  momentoApagado1 = "PM";
+        
+        else   momentoApagado1 = "AM"; 
+
+        
+        
+        if (horaEncendido1 < 10)     horaEncendido1 = "0" + horaEncendido1;
+
+        if (minutoEncendido1 < 10)     minutoEncendido1 = "0" + minutoEncendido1;
+
+        if (horaApagado1 < 10)     horaApagado1 = "0" + horaApagado1;
+
+        if (minutoApagado1 < 10)     minutoApagado1 = "0" + minutoApagado1;
+
+
+        
+        document.getElementById("encendido1_Texto").innerHTML = horaEncendido1+ ":" + minutoEncendido1 + "  " + momentoEncendido1;    
+        
+        document.getElementById("apagado1_Texto").innerHTML = horaApagado1+ ":" + minutoApagado1 + "  " + momentoApagado1;    
+        
+        document.getElementById("botonHorario1").checked = estadoAlarma1;
+
+        document.getElementById("botonValvula1").checked = data.VALVULA_1;
+
+
+        document.getElementById("boxTodos1").checked = data.TODOS_1;
+        document.getElementById("boxLunes1").checked = data.LUNES_1;
+        document.getElementById("boxMartes1").checked = data.MARTES_1;
+        document.getElementById("boxMiercoles1").checked = data.MIERCOLES_1;
+        document.getElementById("boxJueves1").checked = data.JUEVES_1;
+        document.getElementById("boxViernes1").checked = data.VIERNES_1;
+        document.getElementById("boxSabado1").checked = data.SABADO_1;
+        document.getElementById("boxDomingo1").checked = data.DOMINGO_1;
+
+        console.log(data.NOMBRE_1);
+        document.getElementById("nombreFuncionAlarma1").innerHTML = data.NOMBRE_1;    
+        
+
+        var momentoEncendido2, momentoApagado2;
+
+        estadoAlarma2 = data.ALARMA_2;
+
+        horaEncendido2 = parseInt(data.HORA_ENCENDIDO_2);
+        minutoEncendido2 = parseInt(data.MINUTO_ENCENDIDO_2);
+        horaApagado2 = parseInt(data.HORA_APAGADO_2);
+        minutoApagado2 = parseInt(data.MINUTO_APAGADO_2);
+
+
+
+        horaEncendido2 = parseInt(horaEncendido2);
+        minutoEncendido2 = parseInt(minutoEncendido2);
+
+        horaApagado2 = parseInt(horaApagado2);
+        minutoApagado2 = parseInt(minutoApagado2);
+
+
+
+        if (parseInt(data.MOMENTO_ENCENDIDO_2))  momentoEncendido2 = "PM";
+        
+        else   momentoEncendido2 = "AM";   
+        
+
+        if (parseInt(data.MOMENTO_APAGADO_2))  momentoApagado2 = "PM";
+        
+        else   momentoApagado2 = "AM"; 
+
+        
+        
+        if (horaEncendido2 < 10)     horaEncendido2 = "0" + horaEncendido2;
+
+        if (minutoEncendido2 < 10)     minutoEncendido2 = "0" + minutoEncendido2;
+
+        if (horaApagado2 < 10)     horaApagado2 = "0" + horaApagado2;
+
+        if (minutoApagado2 < 10)     minutoApagado2 = "0" + minutoApagado2;
+
+
+        
+        document.getElementById("encendido2_Texto").innerHTML = horaEncendido2+ ":" + minutoEncendido2 + "  " + momentoEncendido2;    
+        
+        document.getElementById("apagado2_Texto").innerHTML = horaApagado2+ ":" + minutoApagado2 + "  " + momentoApagado2;    
+        
+        document.getElementById("botonHorario2").checked = estadoAlarma2;
+
+        document.getElementById("botonValvula2").checked = data.VALVULA_2;
+
+
+        document.getElementById("boxTodos2").checked = data.TODOS_2;
+        document.getElementById("boxLunes2").checked = data.LUNES_2;
+        document.getElementById("boxMartes2").checked = data.MARTES_2;
+        document.getElementById("boxMiercoles2").checked = data.MIERCOLES_2;
+        document.getElementById("boxJueves2").checked = data.JUEVES_2;
+        document.getElementById("boxViernes2").checked = data.VIERNES_2;
+        document.getElementById("boxSabado2").checked = data.SABADO_2;
+        document.getElementById("boxDomingo2").checked = data.DOMINGO_2;
+
+        console.log(data.NOMBRE_2);
+        document.getElementById("nombreFuncionAlarma2").innerHTML = data.NOMBRE_2;    
+
+    }
+
+    function setEncendido(encendido_Hora,encendido_Minutos, encendido_AM, encendido_PM, encendido_Texto){
+        
+        console.log(encendido_Texto);
+
+        var horaEncendido = parseInt(encendido_Hora.value);
+        var minutoEncendido = parseInt(encendido_Minutos.value);
+        var momentoEncendido
+
+
+        if (!((horaEncendido > 0) && (horaEncendido < 13) && (minutoEncendido >= 0) && (minutoEncendido < 60))){    
+
+            errorHora();
+            return;
+        }   
+        
+    
+        if (encendido_AM.checked)
+
+            momentoEncendido = 0;
+        
+        else
+
+            momentoEncendido = 1;
+
+        var full_data = '{"MENSAJE":"ENCENDIDO"';
+
+        if(encendido_Hora.id == "entradaHoraEncendido1"){
+
+                full_data = full_data + ',"ENCENDIDO":'+1;
+        }
+        else{
+
+                full_data = full_data + ',"ENCENDIDO":'+2;
+        }
+        
+        full_data = full_data + ',"HORA_ENCENDIDO":'+horaEncendido+',"MINUTO_ENCENDIDO":'+minutoEncendido+',"MOMENTO_ENCENDIDO":'+momentoEncendido+'}';
+       
+        console.log(full_data);
+
+        conexion.send(full_data);
+
+        enviarHora();
+    }
+
+    function setApagado(apagado_Hora,apagado_Minutos, apagado_AM, apagado_PM, apagado_Texto){
+        
+        console.log(apagado_Texto);
+
+        var horaApagado = parseInt(apagado_Hora.value);
+        var minutoapagado = parseInt(apagado_Minutos.value);
+        var momentoapagado
+
+
+        if (!((horaApagado > 0) && (horaApagado < 13) && (minutoapagado >= 0) && (minutoapagado < 60))){    
+
+            errorHora();
+            return;
+        }   
+        
+    
+        if (apagado_AM.checked)
+
+            momentoapagado = 0;
+        
+        else
+
+            momentoapagado = 1;
+
+                 
+        var full_data = '{"MENSAJE":"APAGADO"';
+
+
+        if(apagado_Hora.id == "entradaHoraApagado1"){
+
+            full_data = full_data + ',"APAGADO":'+1;
+        }
+        else{
+
+            full_data = full_data + ',"APAGADO":'+2;
+        } 
+
+        full_data = full_data + ',"HORA_APAGADO":'+horaApagado+',"MINUTO_APAGADO":'+minutoapagado+',"MOMENTO_APAGADO":'+momentoapagado+'}';
+
+        console.log(full_data);
+
+        conexion.send(full_data);
+
+        enviarHora();
+    }
+
+    function enviarHora(){
+        
+        var hoy = new Date();
+        var dia = hoy.getDay();
+        var horas = hoy.getHours();
+        var minutos = hoy.getMinutes();
+        var segundos = hoy.getSeconds();
+      
+        var full_data = '{"MENSAJE":"RELOJ"';
+
+        full_data = full_data + ',"HORAS":'+horas+',"MINUTOS":'+minutos+',"SEGUNDOS":'+segundos+',"DIA":'+dia+'}';
+
+        console.log(full_data);
+
+        conexion.send(full_data);
+    }
+
+    function enviarNombre(nombreX){
+        
+        var full_data = '{"MENSAJE":"NOMBRE"';
+
+        if(nombreX.id == "nombreFuncionAlarma1"){
+ 
+           full_data = full_data + ',"HORARIO":'+1;
+        }
+        else if(nombreX.id == "nombreFuncionAlarma2"){
+
+            full_data = full_data + ',"HORARIO":'+2;
+        }
+        
+        full_data = full_data + ',"NOMBRE":'+'"'+nombreX.textContent+'"'+'}';
+
+        console.log(full_data);
+
+        conexion.send(full_data);
+    }
+
+    function accionBotonHorario(numero){
+
+        var boton;
+
+        if(numero == 1) boton = document.getElementById("botonHorario1");
+
+        if(numero == 2) boton = document.getElementById("botonHorario2");
+
+
+        var full_data = '{"MENSAJE":"BOTON"';
+
+        full_data = full_data + ',"HORARIO":'+numero+',"ACCION":'+boton.checked+'}';
+
+        console.log(full_data);
+
+        conexion.send(full_data);
+
+        enviarHora();
+    }
+    
+    function enviarDias(numero){
+
+        condicionDias(numero);
+
+        if (numero == 1){
+            
+            todos   = document.getElementById("boxTodos1");
+
+            lunes   = document.getElementById("boxLunes1");
+            martes  = document.getElementById("boxMartes1");
+            miercoles = document.getElementById("boxMiercoles1");
+            jueves  = document.getElementById("boxJueves1");
+            viernes = document.getElementById("boxViernes1");
+            sabado  = document.getElementById("boxSabado1");
+            domingo = document.getElementById("boxDomingo1");
+        }
+        
+        if (numero == 2){
+            
+            todos   = document.getElementById("boxTodos2");
+
+            lunes   = document.getElementById("boxLunes2");
+            martes  = document.getElementById("boxMartes2");
+            miercoles = document.getElementById("boxMiercoles2");
+            jueves  = document.getElementById("boxJueves2");
+            viernes = document.getElementById("boxViernes2");
+            sabado  = document.getElementById("boxSabado2");
+            domingo = document.getElementById("boxDomingo2");
+        }
+        
+
+        var full_data = '{"MENSAJE":"DIAS1"';
+
+        full_data = full_data + ',"HORARIO":'+numero+   ',"TODOS":'+todos.checked+
+                                                        ',"LUNES":'+lunes.checked+
+                                                        ',"MARTES":'+martes.checked+'}';
+        console.log(full_data);
+        conexion.send(full_data);
+
+        var full_data = '{"MENSAJE":"DIAS2"';
+
+        full_data = full_data + ',"HORARIO":'+numero+   ',"MIERCOLES":'+miercoles.checked+
+                                                        ',"JUEVES":'+jueves.checked+
+                                                        ',"VIERNES":'+viernes.checked+'}';
+        console.log(full_data);
+        conexion.send(full_data);
+
+        var full_data = '{"MENSAJE":"DIAS3"';
+
+        full_data = full_data + ',"HORARIO":'+numero+   ',"SABADO":'+sabado.checked+
+                                                        ',"DOMINGO":'+domingo.checked+'}';
+        console.log(full_data);
+        conexion.send(full_data);
+
+        enviarHora();
+    }
+
+    function accionBotonValvula(numero){
+
+        var boton;
+
+        if(numero == 1) boton = document.getElementById("botonValvula1");
+
+        if(numero == 2) boton = document.getElementById("botonValvula2");
+
+
+        var full_data = '{"MENSAJE":"VALVULA"';
+
+        full_data = full_data + ',"HORARIO":'+numero+',"ACCION":'+boton.checked+'}';
+
+        console.log(full_data);
+
+        conexion.send(full_data);
+
+        enviarHora();
+    }
+
+    function send_clave(){
+
+        var clave = prompt("Ingrese la clave del sistema para realizar modificaciones");
+
+        var full_data =  '{"MENSAJE":"CLAVE"'
+                        +',"clave":"'+clave+'"}';
+                    
+        console.log(full_data);
+                    
+        conexion.send(full_data);
+    }
+
+
+</script>
+
+
+<body>
+  <center>        <!-- Se declara que lo siguiente a ser escrito sera centrado-->
+
+
+  <!--  SECCION DEL CONTENEDOR DEL RELOJ -->
+
+    <div class="contenedor-reloj">
+      <div class="dia-semana-de-reloj" id="dia">Hora:</div>
+      <div class="hora-de-reloj" id="horaReloj"></div>
+    </div>
+
+  <!--  SECCION DEL HORARIO 1 Y SUS BOTONES -->
+    <div class="contenedor-principal">
+      <div class="nombre-horario">
+        <p id="nombreFuncionAlarma1" contenteditable="true" oninput="enviarNombre(nombreFuncionAlarma1)">Horario 1</p>
+      </div>
+      
+      <div>
+        <label class="switch">
+          <input id="botonHorario1" onclick="accionBotonHorario(1)"  type="checkbox">
+          <span class="slider round"></span>
+        </label> <br/>
+      </div>
+
+      <div class="boton-valvula" >
+        <label for="botonValvula1">
+          <p style="display: inline-block;">Valvula 1 &nbsp</p>
+          <label class="switch">
+            <input id="botonValvula1" onclick="accionBotonValvula(1)"  type="checkbox">
+            <span class="slider round"></span>
+          </label>
+        </label>
+      </div>
+
+    <!--  SECCION DEL CONTROL DE LOS DIAS DE LA SEMANA --> 
+
+      <button id="botonDias1" class="boton-dias" onclick="funcionBotonDias(diasDeActivacion1, 1)">Dias de la semana</button>
+
+      <div id="diasDeActivacion1" class="dias-de-activacion">
+        <div class="contenido-dias-de-activacion">
+          <span onclick="funcionSpan(diasDeActivacion1, 1)" class="close">&times;</span>
+          <p><strong>HORARIO</strong></p><br/>
+            <div>
+              <table class="tablaDias">
+                <tr>
+                  <th>
+                    <input id="boxTodos1" class="cajasDias" type="checkbox" />
+                  </th>
+                  <th>Todos</th>
+                </tr>
+                <tr>
+                  <th>&nbsp</th>
+                  <th>&nbsp</th>
+                </tr>
+                <tr>
+                  <th>
+                    <input id="boxLunes1" class="cajasDias" type="checkbox" />
+                  </th>
+                  <th>Lunes</th>
+                </tr>
+                <tr>
+                  <th>
+                    <input id="boxMartes1" class="cajasDias" type="checkbox" />
+                  </th>
+                  <th>Martes</th>
+                </tr>
+                <tr>
+                  <th>
+                    <input id="boxMiercoles1" class="cajasDias" type="checkbox" />
+                  </th>
+                  <th>Miercoles</th>
+                </tr>
+                <tr>
+                  <th>
+                    <input id="boxJueves1" class="cajasDias" type="checkbox" />
+                  </th>
+                  <th>Jueves</th>
+                </tr>
+                <tr>
+                  <th>
+                    <input id="boxViernes1" class="cajasDias" type="checkbox" />
+                  </th>
+                  <th>Viernes</th>
+                </tr>
+                <tr>
+                  <th>
+                    <input id="boxSabado1" class="cajasDias" type="checkbox" />
+                  </th>
+                  <th>Sabado</th>
+                </tr>
+                <tr>
+                  <th>
+                    <input id="boxDomingo1" class="cajasDias" type="checkbox" />
+                  </th>
+                  <th>Domingo</th>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!--  SECCION DEL SECCION DE LA ENTRADA DE DATOS -->
+
+        <div>
+          <table id="tabla">
+            <tr>
+              <th>
+                <div class="texto-horas-minutos">
+                  <label for="entradaHoraEncendido1"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="entradaHoraEncendido1" class="entrada-horas-minutos">
+                  </label>
+                </div>
+                <div class="texto-horas-minutos">
+                  <label for="entradaMinutoEncendido1"> Minuto:&nbsp&nbsp <input type="text" id="entradaMinutoEncendido1" class="entrada-horas-minutos">
+                  </label>
+                </div>
+    
+                <div>
+                  <div class="radio-momento">
+                    <label for="entradaMomentoAmEncendido1" >
+                      <input type="radio" id="entradaMomentoAmEncendido1" name="entradaMomentoEncendido1" value="AM">AM
+                    </label>
+                  </div>
+                  <div class="radio-momento">
+                    <label for="entradaMomentoPmEncendido1" >
+                      <input type="radio" id="entradaMomentoPmEncendido1" name="entradaMomentoEncendido1" value="PM">PM
+                    </label>
+                  </div>
+                </div>
+                <button class="boton-ok" onclick="setEncendido(entradaHoraEncendido1, entradaMinutoEncendido1, entradaMomentoAmEncendido1, entradaMomentoPmEncendido1,encendido1_Texto)">OK!</button><br/><br/><br/>
+    
+              </th>
+              <th class="contenedor-hora-fijada">
+                <p class="hora-fijada">Hora de Encendido </p>
+                <p id="encendido1_Texto" class="hora-fijada"></p>
+              </th>
+            </tr>
+            <tr>
+              <th>
+                <div class="texto-horas-minutos">
+                  <label for="entradaHoraApagado1"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="entradaHoraApagado1" class="entrada-horas-minutos">
+                  </label>
+                </div>
+                <div class="texto-horas-minutos">
+                  <label for="entradaMinutoApagado1"> Minuto:&nbsp&nbsp <input type="text" id="entradaMinutoApagado1" class="entrada-horas-minutos">
+                  </label>
+                </div>
+                <div>
+                  <div class="radio-momento">
+                    <label for="entradaMomentoAmApagado1" >
+                      <input type="radio" id="entradaMomentoAmApagado1" name="apagado1_Momento" value="AM">AM
+                    </label>
+                  </div>
+                  <div class="radio-momento">
+                    <label for="entradaMomentoPmApagado1" >
+                      <input type="radio" id="entradaMomentoPmApagado1" name="apagado1_Momento" value="PM">PM
+                    </label>
+                  </div>
+                </div>
+                <button class="boton-ok" onclick="setApagado(entradaHoraApagado1, entradaMinutoApagado1, entradaMomentoAmApagado1, entradaMomentoPmApagado1,apagado1_Texto)">OK!</button><br/><br/><br/>
+              </th>
+              <th class="contenedor-hora-fijada">
+                <p class="hora-fijada">Hora de Apagado </p>
+                <p id="apagado1_Texto" class="hora-fijada"></p>
+              </th>
+            </tr>
+          </table>
+        </div>
+      </div>
+
+
+
+        <p>   <br><br><br><br>  </p>
+
+
+      <div class="contenedor-principal">
+        <div class="nombre-horario">
+            <p id="nombreFuncionAlarma2" class="nombre" contenteditable="true" oninput="enviarNombre(nombreFuncionAlarma2)">Horario 2 &nbsp</p>
+        </div>
+
+        <div>
+          <label class="switch">
+            <input id="botonHorario2" onclick="accionBotonHorario(2)"  type="checkbox">
+            <span class="slider round"></span>
+          </label> <br/>
+        </div>
+
+        <div class="boton-valvula" >
+          <label for="botonValvula2">
+            <p style="display: inline-block;">Valvula 2 &nbsp</p>
+            <label class="switch">
+              <input id="botonValvula2" onclick="accionBotonValvula(2)"  type="checkbox">
+              <span class="slider round"></span>
+            </label>
+          </label>
+        </div>
+        
+  <!--  SECCION DEL CONTROL DE LOS DIAS DE LA SEMANA --> 
+
+        <button id="botonDias2" class="boton-dias" onclick="funcionBotonDias(diasDeActivacion2, 2)">Dias de la semana</button>
+
+        <div id="diasDeActivacion2" class="dias-de-activacion">
+            <div class="contenido-dias-de-activacion">
+                <span onclick="funcionSpan(diasDeActivacion2, 2)" class="close">&times;</span>
+                <p><strong>HORARIO</strong></p><br/>
+                <div display="align-right">
+                    <table class="tablaDias">
+                        <tr><th><input id="boxTodos2" class="cajasDias" type="checkbox" /></th><th>Todos</th></tr>
+                        <tr><th>&nbsp</th><th>&nbsp</th></tr>
+                        <tr><th><input id="boxLunes2" class="cajasDias" type="checkbox" /></th><th>Lunes</th></tr>
+                        <tr><th><input id="boxMartes2" class="cajasDias" type="checkbox" /></th><th>Martes</th></tr>
+                        <tr><th><input id="boxMiercoles2" class="cajasDias" type="checkbox" /></th><th>Miercoles</th></tr>
+                        <tr><th><input id="boxJueves2" class="cajasDias" type="checkbox" /></th><th>Jueves</th></tr>
+                        <tr><th><input id="boxViernes2" class="cajasDias" type="checkbox" /></th><th>Viernes</th></tr>
+                        <tr><th><input id="boxSabado2" class="cajasDias" type="checkbox" /></th><th>Sabado</th></tr>
+                        <tr><th><input id="boxDomingo2" class="cajasDias" type="checkbox" /></th><th>Domingo</th></tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+      <!--  SECCION DEL SECCION DE LA ENTRADA DE DATOS -->       
+        
+        <div>
+          <table id="tabla" style="align-self: center;">
+            <tr>
+              <th>
+                <div class="texto-horas-minutos">
+                  <label for="entradaHoraEncendido2"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="entradaHoraEncendido2" class="entrada-horas-minutos">
+                  </label>
+                </div>
+                <div class="texto-horas-minutos">
+                  <label for="entradaMinutoEncendido2"> Minuto:&nbsp&nbsp <input type="text" id="entradaMinutoEncendido2" class="entrada-horas-minutos">
+                  </label>
+                </div>
+
+                <div>
+                  <div class="radio-momento">
+                    <label for="entradaMomentoAmEncendido2" >
+                      <input type="radio" id="entradaMomentoAmEncendido2" name="entradaMomentoEncendido2" value="AM">AM
+                    </label>
+                  </div>
+                  <div class="radio-momento">
+                    <label for="entradaMomentoPmEncendido2" >
+                      <input type="radio" id="entradaMomentoPmEncendido2" name="entradaMomentoEncendido2" value="PM">PM
+                    </label>
+                  </div>
+                </div>
+
+                <button class="boton-ok" onclick="setEncendido(entradaHoraEncendido2, entradaMinutoEncendido2, entradaMomentoAmEncendido2, entradaMomentoPmEncendido2,encendido2_Texto)">OK!</button><br/><br/><br/>
+
+              </th>
+              <th class="contenedor-hora-fijada">
+                <p class="hora-fijada">Hora de Encendido </p>
+                <p id="encendido2_Texto" class="hora-fijada"></p>
+              </th>
+            </tr>
+            <tr>
+              <th>
+                <div class="texto-horas-minutos">
+                  <label for="entradaHoraApagado2"> Hora:&nbsp&nbsp&nbsp&nbsp&nbsp     <input type="text" id="entradaHoraApagado2" class="entrada-horas-minutos">
+                  </label>
+                </div>
+                <div class="texto-horas-minutos">
+                  <label for="entradaMinutoApagado2"> Minuto:&nbsp&nbsp <input type="text" id="entradaMinutoApagado2" class="entrada-horas-minutos">
+                  </label>
+                </div>
+                <div>
+                  <div class="radio-momento">
+                    <label for="entradaMomentoAmApagado2" >
+                      <input type="radio" id="entradaMomentoAmApagado2" name="entradaMomentoApagado2" value="AM">AM
+                    </label>
+                  </div>
+                  <div class="radio-momento">
+                    <label for="entradaMomentoPmApagado2" >
+                      <input type="radio" id="entradaMomentoPmApagado2" name="entradaMomentoApagado2" value="PM">PM
+                    </label>
+                  </div>
+                </div>
+                <button class="boton-ok" onclick="setApagado(entradaHoraApagado2, entradaMinutoApagado2, entradaMomentoAmApagado2, entradaMomentoPmApagado2,apagado2_Texto)">OK!</button><br/><br/><br/>
+              </th>
+              <th class="contenedor-hora-fijada">
+                <p class="hora-fijada">Hora de Apagado </p>
+                <p id="apagado2_Texto" class="hora-fijada"></p>
+              </th>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </center>
+</body>
+
+<script>
+
+    function reloj() {
+
+        var hoy = new Date();
+        var dia = hoy.getDay();
+        var hora = hoy.getHours();
+        var minuto = hoy.getMinutes();
+        var segundo = hoy.getSeconds();
+        var estadoHora;
+
+        if (hora == 0){ hora = 12;  estadoHora = 1}
+
+        if (hora > 12){ hora = hora - 12;   estadoHora = 1}
+
+        else estadoHora = 0;
+
+        if (minuto < 10) {
+            minuto = "0" + minuto
+        };
+        if (segundo < 10) {
+            segundo = "0" + segundo
+        };
+        
+
+        var horaReloj = document.getElementById("horaReloj");
+
+        if (estadoHora == 0)    horaReloj.textContent = (hora + ":" + minuto + ":" + segundo + " AM");
+
+        else                    horaReloj.textContent = (hora + ":" + minuto + ":" + segundo + " PM");
+
+
+        var dias = ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"];
+
+        document.getElementById("dia").textContent = (dias[dia]);
+    };
+
+    setInterval(reloj, 1000);
+
+    function errorHora(){
+
+        alert("Por favor ingrese correctamente la hora");
+    }
+
+
+
+    function funcionBotonDias(diasDeActivacion, numero){
+
+        diasDeActivacion.style.display = "block";
+        
+        enviarDias(numero);
+    }
+
+    function funcionSpan(diasDeActivacion, numero){
+
+        diasDeActivacion.style.display = "none";
+
+        enviarDias(numero);
+    }
+
+    function condicionDias(numero){
+
+        
+        if (numero == 1){
+            
+            todos   = document.getElementById("boxTodos1");
+
+            lunes   = document.getElementById("boxLunes1");
+            martes  = document.getElementById("boxMartes1");
+            miercoles = document.getElementById("boxMiercoles1");
+            jueves  = document.getElementById("boxJueves1");
+            viernes = document.getElementById("boxViernes1");
+            sabado  = document.getElementById("boxSabado1");
+            domingo = document.getElementById("boxDomingo1");
+        }
+
+        else if (numero == 2){
+
+            todos   = document.getElementById("boxTodos2");
+
+            lunes   = document.getElementById("boxLunes2");
+            martes  = document.getElementById("boxMartes2");
+            miercoles = document.getElementById("boxMiercoles2");
+            jueves  = document.getElementById("boxJueves2");
+            viernes = document.getElementById("boxViernes2");
+            sabado  = document.getElementById("boxSabado2");
+            domingo = document.getElementById("boxDomingo2");
+        }
+        
+        
+        if ((lunes.checked == 0)&&(martes.checked == 0)&&(miercoles.checked == 0)&&(jueves.checked == 0)&&(viernes.checked == 0)&&(sabado.checked == 0)&&(domingo.checked == 0)){
+            
+            todos.checked = 1;
+        }
+        else {
+            todos.checked = 0;
+        }
+    }
+    
+    
+    var diasDeActivacion1 = document.getElementById("diasDeActivacion1");
+    var diasDeActivacion2 = document.getElementById("diasDeActivacion2");
+
+    window.onclick = function(event) {
+
+        if (event.target == diasDeActivacion1)     {
+            
+            diasDeActivacion1.style.display = "none";
+            enviarDias(1);
+        }    
+        if (event.target == diasDeActivacion2)     {
+            
+            diasDeActivacion2.style.display = "none";
+            enviarDias(2);
+        }   
+    }    
+
+
+</script>
+</html>
